@@ -1,5 +1,6 @@
-from torch.nn.utils.rnn import pad_sequence
 import torch
+from torch.nn.utils.rnn import pad_sequence
+from torchtext.data.metrics import bleu_score
 from tqdm import tqdm
 
 class Logger:
@@ -26,7 +27,7 @@ def collate_fn(batch, device):
     return {"src": padded_srcs, "trg": padded_trgs}
 
 
-def translate(snt, dataset, model):
+def translate(snt, dataset, model, device):
     tokens = dataset.tokenizers['en'](snt.lower().strip())
     indices = [dataset.src_vocab['<sos>']] + dataset.src_vocab.lookup_indices(tokens) + [dataset.src_vocab['<eos>']]
     inp_tensor = torch.tensor(indices).unsqueeze(1).to(device)
@@ -64,7 +65,7 @@ def bleu(model, dataset, device):
         src = ' '.join(dataset.src_vocab.lookup_tokens(src))
         trg = dataset.trg_vocab.lookup_tokens(trg)
 
-        prediction = translate(src, dataset, model)
+        prediction = translate(src, dataset, model, device)
         prediction = prediction[1:-1]  # remove <eos> token
         
         targets.append([trg])
