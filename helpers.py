@@ -141,4 +141,4 @@ def train_model(model, data_loader, criterion, optimizer):
         
         epoch_loss += loss.item()
     
-    return epoch_loss / len(train_dataloader)
+    return epoch_loss / len(data_loader)
