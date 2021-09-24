@@ -27,14 +27,17 @@ def collate_fn(batch, device):
     return {"src": padded_srcs, "trg": padded_trgs}
 
 
-def translate(snt, dataset, model, device):
+def translate(snt, dataset, model, attention=False, device):
     tokens = dataset.tokenizers['en'](snt.lower().strip())
     indices = [dataset.src_vocab['<sos>']] + dataset.src_vocab.lookup_indices(tokens) + [dataset.src_vocab['<eos>']]
     inp_tensor = torch.tensor(indices).unsqueeze(1).to(device)
 
     # Build encoder hidden, cell state
     with torch.no_grad():
-        hidden, cell = model.Encoder(inp_tensor)
+        if attention:
+            eouts, hidden, cell = model.Encoder(inp_tensor)
+        else:
+            hidden, cell = model.Encoder(inp_tensor)
 
     outputs = [dataset.trg_vocab["<sos>"]]
 
@@ -42,7 +45,10 @@ def translate(snt, dataset, model, device):
         previous_word = torch.LongTensor([outputs[-1]]).to(device)
 
         with torch.no_grad():
-            output, hidden, cell = model.Decoder(previous_word, hidden, cell)
+            if attention:
+                output, hidden, cell = model.Decoder(previous_word, eouts, hidden, cell)
+            else:
+                output, hidden, cell = model.Decoder(previous_word, hidden, cell)
             best_guess = output.argmax(1).item()
 
         outputs.append(best_guess)
