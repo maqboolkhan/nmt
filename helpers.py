@@ -27,7 +27,7 @@ def collate_fn(batch, device):
     return {"src": padded_srcs, "trg": padded_trgs}
 
 
-def translate(snt, dataset, model, attention=False, device):
+def translate(snt, dataset, model, attention, device):
     tokens = dataset.tokenizers['en'](snt.lower().strip())
     indices = [dataset.src_vocab['<sos>']] + dataset.src_vocab.lookup_indices(tokens) + [dataset.src_vocab['<eos>']]
     inp_tensor = torch.tensor(indices).unsqueeze(1).to(device)
@@ -60,7 +60,7 @@ def translate(snt, dataset, model, attention=False, device):
     return dataset.trg_vocab.lookup_tokens(outputs)
 
 
-def bleu(model, dataset, device):
+def bleu(model, dataset, attention, device):
     targets = []
     outputs = []
 
@@ -71,7 +71,7 @@ def bleu(model, dataset, device):
         src = ' '.join(dataset.src_vocab.lookup_tokens(src))
         trg = dataset.trg_vocab.lookup_tokens(trg)
 
-        prediction = translate(src, dataset, model, device)
+        prediction = translate(src, dataset, model, attention, device)
         prediction = prediction[1:-1]  # remove <eos> token
         
         targets.append([trg])
