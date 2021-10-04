@@ -105,7 +105,7 @@ def evaluate_model(model, data_loader, criterion):
             # Calculate the loss value for every epoch
             loss = criterion(output, target)
 
-            epoch_loss += loss.item()
+            epoch_loss += loss.detach().cpu()
 
     return epoch_loss/len(data_loader)
 
@@ -145,6 +145,6 @@ def train_model(model, data_loader, criterion, optimizer):
         # Update the weights values
         optimizer.step()
         
-        epoch_loss += loss.item()
+        epoch_loss += loss.detach().cpu()
     
     return epoch_loss / len(data_loader)
