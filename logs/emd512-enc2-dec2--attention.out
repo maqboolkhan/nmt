@@ -8,3 +8,4 @@ Epoch: 7, Train loss: 1.2649903297424316, Eval loss: 4.0888166427612305, patienc
 Epoch: 8, Train loss: 1.1115204095840454, Eval loss: 4.280570983886719, patience: 6. Time 266.4188759326935
 Epoch: 9, Train loss: 1.0062137842178345, Eval loss: 4.444218635559082, patience: 7. Time 267.85780453681946
 Epoch: 10, Train loss: 0.9328344464302063, Eval loss: 4.61502742767334, patience: 8. Time 266.4379405975342
+BLEU 0.260

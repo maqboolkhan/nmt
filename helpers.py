@@ -46,7 +46,8 @@ def translate(snt, dataset, model, attention, device):
 
         with torch.no_grad():
             if attention:
-                output, hidden, cell, _ = model.Decoder(previous_word, eouts, hidden, cell)
+                mask = model.create_mask(inp_tensor)
+                output, hidden, cell, _ = model.Decoder(previous_word, eouts, hidden, cell, mask)
             else:
                 output, hidden, cell = model.Decoder(previous_word, hidden, cell)
             best_guess = output.argmax(1).item()
