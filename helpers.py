@@ -22,9 +22,11 @@ def collate_fn(batch, device):
         srcs.append(torch.tensor(row["src"]).to(device))
         trgs.append(torch.tensor(row["trg"]).to(device))
 
+    src_lens = [len(src) for src in srcs]
+    
     padded_srcs = pad_sequence(srcs, padding_value=PAD_IDX)
     padded_trgs = pad_sequence(trgs, padding_value=PAD_IDX)
-    return {"src": padded_srcs, "trg": padded_trgs}
+    return {"src": padded_srcs, "src_lens": src_lens, "trg": padded_trgs}
 
 
 def translate(snt, dataset, model, attention, device):
@@ -87,6 +89,7 @@ def evaluate_model(model, data_loader, criterion):
     with torch.no_grad():
         for batch_idx, batch in enumerate(data_loader):
             src = batch["src"]  # shape --> e.g. (19, 2) sentence len, batch size
+            src_lens = batch["src_lens"]
             trg = batch["trg"]  # shape --> e.g. (3, 2) sentence len, batch size
 
             # Pass the input and target for model's forward method
@@ -94,7 +97,7 @@ def evaluate_model(model, data_loader, criterion):
             # Explanation:
             #    It just outputs probabilities for every single word in our vocab
             #    for each word in sentence and each sentence in batch size
-            output = model(src, trg, 0)
+            output = model(src, src_lens, trg, 0)
 
             # Updating output shape --> [sentence length * batch size , vocab size]
             # e.g (6, 196)
@@ -115,6 +118,7 @@ def train_model(model, data_loader, criterion, optimizer):
     epoch_loss = 0
     for batch_idx, batch in enumerate(tqdm(data_loader)):
         src = batch["src"]  # shape --> e.g. (19, 2) sentence len, batch size
+        src_lens = batch["src_lens"]
         trg = batch["trg"]  # shape --> e.g. (3, 2) sentence len, batch size
 
         # Clear the accumulating gradients
@@ -125,7 +129,7 @@ def train_model(model, data_loader, criterion, optimizer):
         # Explanation:
         #    It just outputs probabilities for every single word in our vocab
         #    for each word in sentence and each sentence in batch size
-        output = model(src, trg)
+        output = model(src, src_lens, trg)
 
         # Updating output shape --> [sentence length * batch size , vocab size]
         # e.g (6, 196)
