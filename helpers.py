@@ -14,7 +14,7 @@ class Logger:
     def close(self):
         self.__f.close()
 
-def collate_fn(batch, device):
+def collate_fn(batch, PAD_IDX, device):
     PAD_IDX = 1
     trgs = []
     srcs = []
