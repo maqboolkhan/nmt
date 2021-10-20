@@ -74,7 +74,7 @@ def bleu(model, dataset, attention, device):
         trg = dataset.trg_vocab.lookup_tokens(trg)
 
         prediction = translate(src, dataset, model, attention, device)
-        prediction = prediction[1:-1]  # remove <eos> token
+        prediction = prediction[1:-1]  # removing <sos> and <eos> tokens
         
         targets.append([trg])
         outputs.append(prediction)
