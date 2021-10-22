@@ -25,7 +25,7 @@ def collate_fn(batch, PAD_IDX, device):
     
     padded_srcs = pad_sequence(srcs, padding_value=PAD_IDX)
     padded_trgs = pad_sequence(trgs, padding_value=PAD_IDX)
-    return {"src": padded_srcs, "src_lens": src_lens, "trg": padded_trgs}
+    return {"src": padded_srcs, "src_lens": torch.tensor(src_lens), "trg": padded_trgs}
 
 
 def translate(snt, dataset, model, attention, device):
@@ -36,7 +36,7 @@ def translate(snt, dataset, model, attention, device):
     # Build encoder hidden, cell state
     with torch.no_grad():
         if attention:
-            eouts, hidden, cell = model.Encoder(inp_tensor)
+            eouts, hidden, cell = model.Encoder(inp_tensor, torch.tensor([len(indices)]))
         else:
             hidden, cell = model.Encoder(inp_tensor)
 

@@ -7,7 +7,7 @@ Progess so far! (Only with 10 epochs, All LSTM models are 2 layered and I used G
 
 | Model | BLEU (test set) | Time (seconds/epoch) |
 | ---  |--- | --- |
-| Simple LSTM model | 0.150 | 142 |
-| Bi-LSTM model | 0.195 | 141 |
-| Attention with Bi-LSTM model | 0.260 | 269 |
+| Simple LSTM model | 0.152 | 100 |
+| Bi-LSTM model | 0.208 | 141 |
+| Attention with Bi-LSTM model | 0.267 | 269 |
 | Transformer | 0.374 | 77 |
