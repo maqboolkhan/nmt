@@ -10,4 +10,4 @@ Progess so far! (Only with 10 epochs, All LSTM models are 2 layered and I used G
 | Simple LSTM model | 0.152 | 100 |
 | Bi-LSTM model | 0.208 | 141 |
 | Attention with Bi-LSTM model | 0.267 | 269 |
-| Transformer | 0.374 | 77 |
+| Transformer | 0.363 | 75 |
