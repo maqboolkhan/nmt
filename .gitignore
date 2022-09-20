@@ -5,3 +5,4 @@ __pycache__
 *.pth
 .virtual_documents/
 runs/
+.idea
