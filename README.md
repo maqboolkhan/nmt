@@ -1,13 +1,14 @@
 ### Neural Machine Translation (NMT)
 ---
-A repository to explore different techniques for neural machine translation using Pytorch.
+A repository to explore different techniques for neural machine translation or Sequence-to-sequence models using Pytorch. <br>
+All models are written from scratch in order to be easily understood and integrateable in any future work!
 
 ### Stats
 
 I only ran all models for 10 epochs. 
 All LSTM models are 2 layered.
 
-| Model | BLEU (test set) | Time (seconds/epoch) GTX 1050 | Time (seconds/epoch) GTX 3070
+| Model | BLEU (test set) | Time (seconds/epoch) GTX 1050 | Time (seconds/epoch) RTX 3070
 | ---  |--- | --- | --- |
 | Simple LSTM model | 0.152 | 100 | 28 |
 | Bi-LSTM model | 0.208 | 141 | 36 |
